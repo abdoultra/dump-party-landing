@@ -1,0 +1,48 @@
+name: Deploy React app to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-vps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Construire le projet
+        run: npm run build
+
+      - name: Envoyer le build vers le VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "dist/*"
+          target: "/var/www/dumbparty"
+          strip_components: 1
+          rm: true
+
+      - name: Recharger Nginx
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            nginx -t
+            systemctl reload nginx
