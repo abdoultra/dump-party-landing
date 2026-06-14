@@ -1,73 +1,88 @@
+import { useState } from 'react'
 import './App.css'
 
+import appStoreBadge from './assets/images/appstore.png'
+import bashLogo from './assets/images/ba&sh.png'
+import etamLogo from './assets/images/etam.png'
+import franceBilletLogo from './assets/images/fancebillet.png'
+import feverLogo from './assets/images/fever.png'
+import googlePlayBadge from './assets/images/googleplay.png'
+import newsletterImage from './assets/images/new.png'
+import phoneImage from './assets/images/phone-cutout.png'
+import ritualsLogo from './assets/images/rituals.jpg'
+import sephoraLogo from './assets/images/sephora.png'
+import activityImage from './assets/images/activity-card.jpg'
+import packImage from './assets/images/pack-card.jpg'
+import partyImage from './assets/images/party-card.jpg'
+
 const partners = [
-  'SEPHORA',
-  'france billet',
-  'Etam',
-  'fever',
-  'ba&sh',
-  'RITUALS',
+  { name: 'Sephora', image: sephoraLogo },
+  { name: 'France Billet', image: franceBilletLogo },
+  { name: 'Etam', image: etamLogo },
+  { name: 'Fever', image: feverLogo },
+  { name: 'ba&sh', image: bashLogo },
+  { name: 'Rituals', image: ritualsLogo, className: 'partner-rituals' },
 ]
 
 const needs = [
   {
     title: 'Se retrouver',
-    text: 'Reprendre confiance apres une periode difficile.',
+    text: 'Reprendre confiance après une période difficile.',
   },
   {
     title: 'Sortir plus facilement',
-    text: 'Trouver rapidement des activites et experiences adaptees.',
+    text: 'Trouver rapidement des activités et expériences adaptées.',
   },
   {
-    title: 'Avancer a son rythme',
-    text: 'Beneficier d’un parcours simple, et pense pour ce moment de vie.',
+    title: 'Avancer à son rythme',
+    text: 'Bénéficier d’un parcours simple, pensé pour ce moment de vie.',
   },
 ]
 
 const offers = [
   {
-    title: 'Activites a la carte',
-    text: 'pour reserver uniquement une activite, de facon flexible et rapide.',
-    price: '40 EUR',
-    unit: '/ les 2h',
-    button: 'Decouvrir nos activites',
-    bullets: ['Activites', 'Choix libre horaires'],
-    image: '/images/prototype_demo.png',
+    title: 'Activités à la carte',
+    text: 'Pour réserver uniquement une activité, de façon flexible et rapide.',
+    price: '40 €',
+    unit: '/ les 2 h',
+    button: 'Découvrir nos activités',
+    bullets: ['Activités', 'Choix libre des horaires'],
+    image: activityImage,
   },
   {
     title: 'Pack tout compris',
-    text: 'pour profiter d’une experience complete, avec plusieurs services regroupes.',
-    price: '299 EUR',
-    unit: '/ la journee',
-    button: 'Decouvrir nos Packs',
-    bullets: ['Activites', 'Soirees', 'Choix libre horaires', 'Priorites'],
-    image: '/images/prototype_demo2.png',
+    text: 'Pour profiter d’une expérience complète, avec plusieurs services regroupés.',
+    price: '299 €',
+    unit: '/ la journée',
+    button: 'Découvrir nos packs',
+    bullets: ['Activités', 'Soirées', 'Choix libre des horaires', 'Priorités'],
+    image: packImage,
     featured: true,
     badge: 'Le plus populaire',
   },
   {
-    title: 'Soirees a la carte',
-    text: 'pour choisir une soiree precise selon ses envies du moment.',
-    price: '280 EUR',
-    unit: '/ la soiree',
-    button: 'Decouvrir nos soirees',
-    bullets: ['Soirees', 'Choix libre horaires'],
-    image: '/images/prototype_demo2.png',
+    title: 'Soirées à la carte',
+    text: 'Pour choisir une soirée précise selon ses envies du moment.',
+    price: '280 €',
+    unit: '/ la soirée',
+    button: 'Découvrir nos soirées',
+    bullets: ['Soirées', 'Choix libre des horaires'],
+    image: partyImage,
   },
 ]
 
 const testimonials = [
   {
-    text: 'Lorem ipsum dolor sit amet consectetur. Aliquam eget ac ac neque condimentum etiam. Scelerisque id in vulputate neque tincidunt sollicitudin mus.',
+    text: 'Une expérience vraiment bien pensée. J’ai pu réserver facilement et passer un excellent moment sans avoir à tout organiser.',
     author: 'Hugo',
   },
   {
-    text: 'Lorem ipsum dolor sit amet consectetur. Aliquam eget ac ac neque condimentum etiam. Scelerisque id in vulputate neque tincidunt sollicitudin mus.',
-    author: 'Hugo',
+    text: 'Le pack était clair, simple à réserver et l’activité correspondait exactement à ce dont j’avais besoin pour changer d’air.',
+    author: 'Naomi',
   },
   {
-    text: 'Lorem ipsum dolor sit amet consectetur. Aliquam eget ac ac neque condimentum etiam. Scelerisque id in vulputate neque tincidunt sollicitudin mus.',
-    author: 'Hugo',
+    text: 'J’ai aimé pouvoir choisir à mon rythme. L’application rassure et toutes les informations utiles sont faciles à retrouver.',
+    author: 'Sarah',
   },
 ]
 
@@ -75,49 +90,76 @@ const steps = [
   {
     number: '1',
     title: 'Choisissez votre formule',
-    text: 'Selectionnez une soiree a la carte, une activite a la carte ou un pack tout compris selon vos envies.',
+    text: 'Sélectionnez une soirée à la carte, une activité à la carte ou un pack tout compris selon vos envies.',
   },
   {
     number: '2',
-    title: 'Reservez en quelques clics',
-    text: 'Consultez les details, ajoutez votre selection au panier et validez facilement votre reservation.',
+    title: 'Réservez en quelques clics',
+    text: 'Consultez les détails, ajoutez votre sélection au panier et validez facilement votre réservation.',
   },
   {
     number: '3',
-    title: 'Vivez l’experience',
-    text: 'Profitez d’un moment pense pour vous faire du bien, sortir de la routine et avancer a votre rythme.',
+    title: 'Vivez l’expérience',
+    text: 'Profitez d’un moment pensé pour vous faire du bien, sortir de la routine et avancer à votre rythme.',
   },
 ]
 
 const features = [
   {
-    title: 'Plus de liberte',
-    text: 'Choisissez entre soiree a la carte, activite seule ou pack complet selon votre envie du moment.',
+    title: 'Plus de liberté',
+    text: 'Choisissez entre soirée à la carte, activité seule ou pack complet selon votre envie du moment.',
   },
   {
-    title: 'Plus de simplicite',
-    text: 'Consultez les offres, ajoutez au panier et reservez rapidement depuis une interface claire.',
+    title: 'Plus de simplicité',
+    text: 'Consultez les offres, ajoutez au panier et réservez rapidement depuis une interface claire.',
   },
   {
-    title: 'Plus de reassurance',
-    text: 'Retrouvez toutes vos informations dans l’app, avec suivi, notifications et acces a votre compte.',
+    title: 'Plus de réassurance',
+    text: 'Retrouvez toutes vos informations dans l’app, avec suivi, notifications et accès à votre compte.',
   },
 ]
 
+function StoreBadges({ small = false }) {
+  return (
+    <div className={`store-badges${small ? ' store-badges-small' : ''}`}>
+      <a href="#appstore" aria-label="Télécharger dans l’App Store">
+        <img src={appStoreBadge} alt="Télécharger dans l’App Store" />
+      </a>
+      <a href="#googleplay" aria-label="Disponible sur Google Play">
+        <img src={googlePlayBadge} alt="Disponible sur Google Play" />
+      </a>
+    </div>
+  )
+}
+
 function App() {
+  const [testimonialOffset, setTestimonialOffset] = useState(0)
+
+  const visibleTestimonials = testimonials.map(
+    (_, index) => testimonials[(index + testimonialOffset) % testimonials.length],
+  )
+
+  const moveTestimonials = (direction) => {
+    setTestimonialOffset(
+      (current) => (current + direction + testimonials.length) % testimonials.length,
+    )
+  }
+
   return (
     <div className="page" id="top">
       <header className="topbar">
-        <div className="brand">Dump Party</div>
+        <a className="brand" href="#top" aria-label="Dump Party, accueil">
+          Dump Party
+        </a>
         <nav className="topnav" aria-label="Navigation principale">
           <a href="#blog">Blog</a>
           <a href="#faq">FAQ</a>
-          <span className="account-text">Deja un compte ?</span>
+          <span className="account-text">Déjà un compte ?</span>
           <a className="nav-login" href="#signin">
             Se connecter
           </a>
-          <button className="lang-button" type="button">
-            FR
+          <button className="lang-button" type="button" aria-label="Langue : français">
+            FR <span aria-hidden="true">⌄</span>
           </button>
         </nav>
       </header>
@@ -126,15 +168,15 @@ function App() {
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <h1>Tourner la page, un moment a la fois.</h1>
+              <h1>Tourner la page, un moment à la fois.</h1>
               <p>
-                Dump Party vous aide a retrouver du lien, reserver des activites
-                et/ou soirees adaptees et vivre une experience pensee pour vous
+                Dump Party vous aide à retrouver du lien, réserver des activités
+                et/ou soirées adaptées et vivre une expérience pensée pour vous
                 faire du bien.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#offers">
-                  Decouvrir l&apos;app
+                  Découvrir l’app
                 </a>
                 <a className="button button-secondary" href="#offers">
                   Voir les packs
@@ -145,20 +187,11 @@ function App() {
             <div className="hero-visual">
               <div className="hero-phone">
                 <img
-                  src="/images/prototype_demo2.png"
-                  alt="Apercu mobile de l application Dump Party"
+                  src={phoneImage}
+                  alt="Aperçu mobile de l’application Dump Party"
                 />
               </div>
-              <div className="store-badges">
-                <a className="store-badge" href="#appstore">
-                  <span>Telecharger dans</span>
-                  <strong>l&apos;App Store</strong>
-                </a>
-                <a className="store-badge" href="#googleplay">
-                  <span>Disponible sur</span>
-                  <strong>Google Play</strong>
-                </a>
-              </div>
+              <StoreBadges />
             </div>
           </div>
         </section>
@@ -166,21 +199,23 @@ function App() {
         <section className="partners-strip" aria-label="Marques partenaires">
           <div className="partners-track">
             {partners.map((partner) => (
-              <span key={partner}>{partner}</span>
+              <div className={`partner-logo ${partner.className || ''}`} key={partner.name}>
+                <img src={partner.image} alt={partner.name} />
+              </div>
             ))}
           </div>
         </section>
 
-        <section className="section" id="need">
+        <section className="section need-section" id="need">
           <div className="container">
             <div className="section-heading section-heading-left">
               <h2>Quand avancer seul devient plus difficile</h2>
               <p>
-                Apres une rupture, il n’est pas toujours facile de retrouver un
-                rythme, de sortir ou simplement de savoir par ou recommencer.
+                Après une rupture, il n’est pas toujours facile de retrouver un
+                rythme, de sortir ou simplement de savoir par où recommencer.
                 Beaucoup de personnes ressentent le besoin de se changer les
-                idees, de reprendre confiance et de vivre de nouvelles
-                experiences positives, mais sans savoir vers qui se tourner ni
+                idées, de reprendre confiance et de vivre de nouvelles
+                expériences positives, sans savoir vers qui se tourner ni
                 comment s’organiser.
               </p>
             </div>
@@ -196,22 +231,22 @@ function App() {
 
             <div className="center-cta">
               <a className="button button-primary compact" href="#offers">
-                Decouvrir l&apos;app
+                Découvrir l’app
               </a>
             </div>
           </div>
         </section>
 
-        <section className="section" id="offers">
+        <section className="section offers-section" id="offers">
           <div className="container">
             <div className="section-heading section-heading-left">
-              <h2>Trois facons de vivre l&apos;experience</h2>
+              <h2>Trois façons de vivre l’expérience</h2>
               <p>
-                Dump Party propose plusieurs facons d’avancer selon ses envies
-                et son budget : choisir une soiree a la carte, opter pour un
-                pack tout compris ou reserver seulement une activite.
-                L’utilisateur garde ainsi la liberte de vivre l’experience a son
-                rythme, avec une offre simple et claire.
+                Dump Party propose plusieurs façons d’avancer selon ses envies
+                et son budget : choisir une soirée à la carte, opter pour un
+                pack tout compris ou réserver seulement une activité.
+                L’utilisateur garde ainsi la liberté de vivre l’expérience à
+                son rythme, avec une offre simple et claire.
               </p>
             </div>
 
@@ -222,26 +257,22 @@ function App() {
                   key={offer.title}
                 >
                   {offer.badge ? <div className="offer-badge">{offer.badge}</div> : null}
-
                   <div className="offer-image">
                     <img src={offer.image} alt="" />
                   </div>
-
                   <div className="offer-content">
                     <h3>{offer.title}</h3>
                     <p>{offer.text}</p>
                     <div className="offer-price">
-                      <span>A partir de</span>
+                      <span>À partir de</span>
                       <div>
                         <strong>{offer.price}</strong>
                         <small>{offer.unit}</small>
                       </div>
                     </div>
-
                     <a className="offer-button" href="#newsletter">
                       {offer.button}
                     </a>
-
                     <ul className="offer-list">
                       {offer.bullets.map((bullet) => (
                         <li key={bullet}>{bullet}</li>
@@ -261,21 +292,31 @@ function App() {
             </div>
 
             <div className="testimonials-row">
-              <button className="arrow-button" type="button" aria-label="Temoignage precedent">
+              <button
+                className="arrow-button"
+                type="button"
+                aria-label="Témoignage précédent"
+                onClick={() => moveTestimonials(-1)}
+              >
                 ‹
               </button>
-
-              <div className="testimonials-grid">
-                {testimonials.map((item, index) => (
-                  <article className="testimonial-card" key={`${item.author}-${index}`}>
-                    <div className="stars">★★★★★</div>
+              <div className="testimonials-grid" aria-live="polite">
+                {visibleTestimonials.map((item) => (
+                  <article className="testimonial-card" key={item.author}>
+                    <div className="stars" aria-label="5 étoiles">
+                      ★★★★★
+                    </div>
                     <p>{item.text}</p>
                     <strong>{item.author}</strong>
                   </article>
                 ))}
               </div>
-
-              <button className="arrow-button" type="button" aria-label="Temoignage suivant">
+              <button
+                className="arrow-button"
+                type="button"
+                aria-label="Témoignage suivant"
+                onClick={() => moveTestimonials(1)}
+              >
                 ›
               </button>
             </div>
@@ -285,9 +326,8 @@ function App() {
         <section className="how-section" id="how">
           <div className="container">
             <div className="section-heading section-heading-left light-heading">
-              <h2>Comment ca marche ?</h2>
+              <h2>Comment ça marche ?</h2>
             </div>
-
             <div className="how-grid">
               {steps.map((step, index) => (
                 <article className="how-card" key={step.number}>
@@ -306,12 +346,12 @@ function App() {
         <section className="section features-section" id="features">
           <div className="container">
             <div className="section-heading section-heading-left">
-              <h2>Tout ce qu&apos;il faut pour passer a autre chose</h2>
+              <h2>Tout ce qu’il faut pour passer à autre chose</h2>
               <p>
-                Dump Party ne propose pas seulement des reservations, mais une
-                experience pensee pour simplifier l’apres-rupture. L’application
-                aide l’utilisateur a trouver facilement ce qui lui correspond, a
-                reserver sans friction et a vivre un moment positif dans un
+                Dump Party ne propose pas seulement des réservations, mais une
+                expérience pensée pour simplifier l’après-rupture. L’application
+                aide l’utilisateur à trouver facilement ce qui lui correspond,
+                à réserver sans friction et à vivre un moment positif dans un
                 cadre clair et rassurant.
               </p>
             </div>
@@ -327,13 +367,11 @@ function App() {
                   <p>{features[2].text}</p>
                 </article>
               </div>
-
               <div className="feature-arrow" aria-hidden="true">
                 <span className="feature-arrow-top" />
                 <span className="feature-arrow-body" />
                 <span className="feature-arrow-tip" />
               </div>
-
               <div className="feature-side right">
                 <article>
                   <h3>{features[1].title}</h3>
@@ -346,25 +384,30 @@ function App() {
 
         <section className="newsletter-shell" id="newsletter">
           <div className="container newsletter-card">
-            <div className="newsletter-illustration" aria-hidden="true">
-              <div className="news-badge">NEWS</div>
-              <div className="news-envelope">
-                <span />
-              </div>
-            </div>
-
+            <img
+              className="newsletter-illustration"
+              src={newsletterImage}
+              alt=""
+              aria-hidden="true"
+            />
             <div className="newsletter-copy">
-              <h2>Restez informe</h2>
+              <h2>Restez informé</h2>
               <p>
-                Recevez les nouveautes de Dump Party, nos prochaines experiences
-                et les dernieres actualites directement par email.
+                Recevez les nouveautés de Dump Party, nos prochaines expériences
+                et les dernières actualités directement par email.
               </p>
-              <form className="newsletter-form">
-                <div className="newsletter-input">
-                  <span>✉</span>
-                  <input type="email" placeholder="Votre adresse email" />
-                </div>
-                <button type="submit">S&apos;inscrire</button>
+              <form className="newsletter-form" onSubmit={(event) => event.preventDefault()}>
+                <label className="newsletter-input">
+                  <span aria-hidden="true">✉</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Votre adresse email"
+                    aria-label="Votre adresse email"
+                    required
+                  />
+                </label>
+                <button type="submit">S’inscrire</button>
               </form>
             </div>
           </div>
@@ -374,21 +417,14 @@ function App() {
       <footer className="footer">
         <div className="container footer-grid">
           <div className="footer-brand-block">
-            <div className="footer-brand">Dump Party</div>
+            <a className="footer-brand" href="#top">
+              Dump Party
+            </a>
             <p>
-              Des experiences pensees pour avancer, sortir et se reconstruire a
+              Des expériences pensées pour avancer, sortir et se reconstruire à
               son rythme.
             </p>
-            <div className="footer-stores">
-              <a className="store-badge small" href="#appstore">
-                <span>Telecharger dans</span>
-                <strong>l&apos;App Store</strong>
-              </a>
-              <a className="store-badge small" href="#googleplay">
-                <span>Disponible sur</span>
-                <strong>Google Play</strong>
-              </a>
-            </div>
+            <StoreBadges small />
           </div>
 
           <div>
@@ -396,9 +432,9 @@ function App() {
             <a href="#top">Accueil</a>
             <a href="#need">Le besoin</a>
             <a href="#offers">La solution</a>
-            <a href="#testimonials">Temoignages</a>
-            <a href="#how">Comment ca marche?</a>
-            <a href="#features">Fonctionnalites</a>
+            <a href="#testimonials">Témoignages</a>
+            <a href="#how">Comment ça marche ?</a>
+            <a href="#features">Fonctionnalités</a>
           </div>
 
           <div>
@@ -406,7 +442,7 @@ function App() {
             <a href="mailto:dumpparty@gmail.com">dumpparty@gmail.com</a>
             <a href="tel:+33640605465">06 40 60 54 65</a>
             <a className="footer-cta" href="#offers">
-              Decouvrir l&apos;app
+              Découvrir l’app
             </a>
           </div>
         </div>
